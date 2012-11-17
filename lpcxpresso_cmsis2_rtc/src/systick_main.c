@@ -13,9 +13,14 @@ __CRP const unsigned int CRP_WORD = CRP_NO_CRP ;
 #include "uart.h"
 #include "logger.h"
 #include "s0_input.h"
+#include "rtc.h"
 
 volatile uint32_t msTicks; // counter for 1ms SysTicks
+volatile uint32_t uptime_secs = 0; // counter for 1ms SysTicks
 extern volatile unsigned int eint3_count;
+extern volatile uint32_t rtc_alarm_secs, rtc_alarm_minutes, rtc_alamr_hours;
+RTCTime local_time;
+
 
 
 // ****************
@@ -41,6 +46,23 @@ int main(void) {
 	if (SysTick_Config(SystemCoreClock / 100)) {
 	    while (1);  // Capture error
 	}
+
+    /* Initialize RTC module */
+	RTCInit();
+
+	local_time.RTC_Sec = 0;
+	local_time.RTC_Min = 0;
+	local_time.RTC_Hour = 0;
+	local_time.RTC_Mday = 0;
+	local_time.RTC_Wday = 0;
+	local_time.RTC_Yday = 17; /* current date 07/12/2006 */
+	local_time.RTC_Mon = 11;
+	local_time.RTC_Year = 2012;
+	RTCSetTime(local_time); /* Set local time */
+
+	LPC_RTC->CIIR = IMMIN | IMSEC;
+	RTCStart();
+	NVIC_EnableIRQ(RTC_IRQn);
 
 	led_init();	// Setup GPIO for LED2
 	led2_on();		// Turn LED2 on
@@ -83,6 +105,18 @@ int main(void) {
 		if (triggerValue) {
 			logger_logStringln("s0_1");
 			led_signal(1, 30, msTicks);
+		}
+
+		if (rtc_alarm_secs != 0) {
+			uptime_secs++;
+			rtc_alarm_secs = 0;
+			logger_logStringln("RTC Alarm Seconds");
+			logger_logString("Uptime: ");
+			logger_logNumberln(uptime_secs);
+		}
+		if (rtc_alarm_minutes != 0) {
+			rtc_alarm_minutes = 0;
+			logger_logStringln("RTC Alarm Minutes");
 		}
 
 	}
