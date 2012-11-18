@@ -60,7 +60,7 @@ int main(void) {
 	local_time.RTC_Year = 2012;
 	RTCSetTime(local_time); /* Set local time */
 
-	LPC_RTC->CIIR = IMMIN | IMSEC;
+	LPC_RTC->CIIR = IMSEC;
 	RTCStart();
 	NVIC_EnableIRQ(RTC_IRQn);
 
@@ -83,6 +83,25 @@ int main(void) {
 
 	//EINT3_enable();
 	logger_logStringln("logger online ...");
+
+	logger_logString("Value of RTC GPREG0: ");
+	logger_logNumberln(LPC_RTC->GPREG0);
+	logger_logString("Value of RTC GPREG1: ");
+	logger_logNumberln(LPC_RTC->GPREG1);
+	logger_logString("Value of RTC GPREG2: ");
+	logger_logNumberln(LPC_RTC->GPREG2);
+	logger_logString("Value of RTC GPREG3: ");
+	logger_logNumberln(LPC_RTC->GPREG3);
+	logger_logString("Value of RTC GPREG4: ");
+	logger_logNumberln(LPC_RTC->GPREG4);
+
+	LPC_RTC->GPREG0 = 0;
+	LPC_RTC->GPREG1 = 0;
+	LPC_RTC->GPREG2 = 0;
+	LPC_RTC->GPREG3 = 0;
+	LPC_RTC->GPREG4 = 0;
+
+
 	while(1) {
 
 		/* process logger */
