@@ -86,6 +86,16 @@ void RTCInit( void )
   LPC_RTC->AMR = 0;
   LPC_RTC->CIIR = 0;
   LPC_RTC->CCR = 0;
+
+  local_time.RTC_Sec = 0;
+  local_time.RTC_Min = 0;
+  local_time.RTC_Hour = 0;
+  local_time.RTC_Mday = 0;
+  local_time.RTC_Wday = 0;
+  local_time.RTC_Yday = 1; /* current date 07/12/2006 */
+  local_time.RTC_Mon = 1;
+  local_time.RTC_Year = 2012;
+  RTCSetTime(local_time);  /* Set local time */
   return;
 }
 

@@ -49,17 +49,6 @@ int main(void) {
 
     /* Initialize RTC module */
 	RTCInit();
-
-	local_time.RTC_Sec = 0;
-	local_time.RTC_Min = 0;
-	local_time.RTC_Hour = 0;
-	local_time.RTC_Mday = 0;
-	local_time.RTC_Wday = 0;
-	local_time.RTC_Yday = 17; /* current date 07/12/2006 */
-	local_time.RTC_Mon = 11;
-	local_time.RTC_Year = 2012;
-	RTCSetTime(local_time); /* Set local time */
-
 	LPC_RTC->CIIR = IMSEC;
 	RTCStart();
 	NVIC_EnableIRQ(RTC_IRQn);
