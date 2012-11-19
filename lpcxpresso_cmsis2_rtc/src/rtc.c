@@ -87,6 +87,7 @@ void RTCInit( void )
   LPC_RTC->CIIR = 0;
   LPC_RTC->CCR = 0;
 
+  RTCTime local_time;
   local_time.RTC_Sec = 0;
   local_time.RTC_Min = 0;
   local_time.RTC_Hour = 0;

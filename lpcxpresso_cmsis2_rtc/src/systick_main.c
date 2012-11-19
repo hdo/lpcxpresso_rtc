@@ -19,7 +19,6 @@ volatile uint32_t msTicks; // counter for 1ms SysTicks
 volatile uint32_t uptime_secs = 0; // counter for 1ms SysTicks
 extern volatile unsigned int eint3_count;
 extern volatile uint32_t rtc_alarm_secs, rtc_alarm_minutes, rtc_alamr_hours;
-RTCTime local_time;
 
 
 
